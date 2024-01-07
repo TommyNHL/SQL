@@ -86,6 +86,12 @@ insert into JOB_HISTORY (employee_id, start_date, end_date, job_id, department_i
 	values (100, '1996-02-17', '1999-12-19', 'ST_CLERK', 30);
 insert into JOB_HISTORY (employee_id, start_date, end_date, job_id, department_id)
 	values (103, '1998-03-24', '1999-12-31', 'MK_REP', 20);
+insert into JOB_HISTORY (employee_id, start_date, end_date, job_id, department_id)
+	values (109, '1986-10-28', '1997-03-15', 'ST_CLERK', 30);
+insert into JOB_HISTORY (employee_id, start_date, end_date, job_id, department_id)
+	values (108, '1984-02-17', '1999-12-19', 'IT_PROG', 30);
+insert into JOB_HISTORY (employee_id, start_date, end_date, job_id, department_id)
+	values (105, '1988-03-24', '1999-12-31', 'MK_REP', 20);
 select * from JOB_HISTORY;
 
 drop table EMPLOYEES;
@@ -112,6 +118,12 @@ insert into EMPLOYEES (employee_id, first_name, last_name, email, phone_number, 
 	values (102, 'Lex', 'De Haan', 'LDEHAAN', '515-1234569', '1987-06-19', 'IT_PROG', 17000, 0, 108, 30);
 insert into EMPLOYEES (employee_id, first_name, last_name, email, phone_number, hire_date, job_id, salary, commission_pct, manager_id, department_id)
 	values (103, 'Alexander', 'Hunold', 'AHUNOLD', '590-4234567', '1987-06-20', 'MK_REP', 9000, 0, 105, 20);
+insert into EMPLOYEES (employee_id, first_name, last_name, email, phone_number, hire_date, job_id, salary, commission_pct, manager_id, department_id)
+	values (109, 'Peter', 'Ng', 'ABC', '590-4234547', '1986-06-20', 'ST_CLERK', 30000, 0, 109, 10);
+insert into EMPLOYEES (employee_id, first_name, last_name, email, phone_number, hire_date, job_id, salary, commission_pct, manager_id, department_id)
+	values (108, 'Gigi', 'Wong', 'CDE', '590-4234537', '1982-06-20', 'IT_PROG', 60000, 0, 108, 30);
+insert into EMPLOYEES (employee_id, first_name, last_name, email, phone_number, hire_date, job_id, salary, commission_pct, manager_id, department_id)
+	values (105, 'Iris', 'Lee', 'EFG', '590-4234517', '1981-06-20', 'MK_REP', 30000, 0, 105, 20);
 select * from EMPLOYEES;
 
 drop table JOBS;
@@ -158,6 +170,10 @@ select e.first_name, e.last_name, e.department_id
 	from EMPLOYEES e;
     
 select e.first_name, e.last_name, e.job_id, e.department_id
-	from EMPLOYEES e
-    where e.department_id = 20;
-    -- select location_id from DEPARTMENTS where location_id = (select country_id = 'JP' from LOCATIONS))
+    from EMPLOYEES e left join DEPARTMENTS d on e.department_id = d.department_id
+    left join LOCATIONS l on d.location_id = l.location_id
+    where l.country_id = 'JP';
+
+select e.employee_id, e.last_name as self_name, e.manager_id, m.last_name as head_name
+    from EMPLOYEES e left join EMPLOYEES m on e.manager_id = m.employee_id;
+
