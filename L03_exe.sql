@@ -177,3 +177,33 @@ select e.first_name, e.last_name, e.job_id, e.department_id
 select e.employee_id, e.last_name as self_name, e.manager_id, m.last_name as head_name
     from EMPLOYEES e left join EMPLOYEES m on e.manager_id = m.employee_id;
 
+select e.first_name, e.last_name, e.hire_date
+	from EMPLOYEES e
+	where e.hire_date > (select hire_date from EMPLOYEES where first_name = 'Lex' and last_name = 'De Haan');
+
+select d.department_name, count(e.department_id)
+	from DEPARTMENTS d left join EMPLOYEES e on d.department_id = e.department_id
+    group by d.department_id;
+
+select e.employee_id, j.job_title, DATEDIFF(h.end_date, h.start_date) as number_of_days
+	from EMPLOYEES e left join JOBS j on e.job_id = j.job_id
+    left join JOB_HISTORY h on e.employee_id = h.employee_id
+	where e.department_id = 30;
+    
+select d.department_name, (CONCAT(e.first_name, ' ', e.last_name)) as manager_name, l.city, c.country_name
+	from DEPARTMENTS d left join EMPLOYEES e on d.manager_id = e.employee_id
+    left join LOCATIONS l on d.location_id = l.location_id
+    left join COUNTRIES c on l.country_id = c.country_id;
+    
+select d.department_name, avg(e.salary) as average_salary_per_department
+	from EMPLOYEES e left join DEPARTMENTS d on e.department_id = d.department_id
+    group by e.department_id;
+
+select * from JOBS;
+select * from JOB_GRADES;
+
+alter table JOBS add grade_level VARCHAR(2);
+alter table JOBS drop column min_salary;
+alter table JOBS drop column max_salary;
+alter table JOBS
+	add constraint foreign key (grade_level) references JOB_GRADES(grade_level);
